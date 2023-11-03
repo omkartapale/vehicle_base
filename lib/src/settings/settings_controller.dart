@@ -47,4 +47,16 @@ class SettingsController with ChangeNotifier {
     // SettingService.
     await _settingsService.updateThemeMode(newThemeMode);
   }
+
+  /// Clear the ThemeMode from Pref and reset to system.
+  Future<void> clearThemeMode() async {
+    _themeMode = ThemeMode.system;
+
+    // Important! Inform listeners a change has occurred.
+    notifyListeners();
+
+    // Clear the prefs to a local database or the internet using the
+    // SettingService.
+    await _settingsService.clearThemeMode();
+  }
 }

@@ -19,32 +19,46 @@ class SettingsView extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Settings'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        // Glue the SettingsController to the theme selection DropdownButton.
-        //
-        // When a user selects a theme from the dropdown list, the
-        // SettingsController is updated, which rebuilds the MaterialApp.
-        child: DropdownButton<ThemeMode>(
-          // Read the selected themeMode from the controller
-          value: controller.themeMode,
-          // Call the updateThemeMode method any time the user selects a theme.
-          onChanged: controller.updateThemeMode,
-          items: const [
-            DropdownMenuItem(
-              value: ThemeMode.system,
-              child: Text('System Theme'),
+      body: Column(
+        children: [
+          ListTile(
+            title: Text('Color Scheme'.toUpperCase()),
+            subtitle: const Text('Set it to your choice or set it to '
+                'System to adapt with system.'),
+
+            // Glue the SettingsController to the theme selection DropdownButton.
+            //
+            // When a user selects a theme from the dropdown list, the
+            // SettingsController is updated, which rebuilds the MaterialApp.
+            trailing: DropdownButton<ThemeMode>(
+              borderRadius: BorderRadius.circular(8),
+
+              // Read the selected themeMode from the controller
+              value: controller.themeMode,
+              // Call the updateThemeMode method any time the user selects a theme.
+              onChanged: controller.updateThemeMode,
+              items: const [
+                DropdownMenuItem(
+                  value: ThemeMode.system,
+                  child: Text('System'),
+                ),
+                DropdownMenuItem(
+                  value: ThemeMode.light,
+                  child: Text('Light'),
+                ),
+                DropdownMenuItem(
+                  value: ThemeMode.dark,
+                  child: Text('Dark'),
+                )
+              ],
             ),
-            DropdownMenuItem(
-              value: ThemeMode.light,
-              child: Text('Light Theme'),
-            ),
-            DropdownMenuItem(
-              value: ThemeMode.dark,
-              child: Text('Dark Theme'),
-            )
-          ],
-        ),
+          ),
+          const SizedBox(height: 16),
+          FilledButton(
+            onPressed: () => controller.clearThemeMode(),
+            child: const Text('Clear Preferences'),
+          ),
+        ],
       ),
     );
   }
