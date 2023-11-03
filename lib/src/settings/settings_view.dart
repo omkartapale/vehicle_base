@@ -53,11 +53,25 @@ class SettingsView extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 16),
+          ListTile(
+            title: Text(
+              'About'.toUpperCase(),
+            ),
+            subtitle: const Text('Vehicle Base App'),
+            onTap: () {
+              showAboutDialog(
+                  context: context,
+                  applicationName: 'Vehicle Base',
+                  applicationVersion: 'Nov 2023',
+                  applicationLegalese: '\u00a9 2023 Tech4Geek Solutions');
+            },
+          ),
+          const Spacer(),
           FilledButton(
             onPressed: () => controller.clearThemeMode(),
             child: const Text('Clear Preferences'),
           ),
+          const SizedBox(height: 16),
         ],
       ),
     );
