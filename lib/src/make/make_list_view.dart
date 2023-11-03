@@ -1,31 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:vehicle_base/src/make/make_list_view.dart';
 
 import '../settings/settings_view.dart';
-import '../model/vehicle.dart';
-import '../data/vehicle_repository.dart';
+import '../model/make.dart';
+import '../data/make_repository.dart';
 
 /// Displays a list of Vehicles.
-class VehicleListView extends StatelessWidget {
-  const VehicleListView({super.key});
+class MakeListView extends StatelessWidget {
+  const MakeListView({super.key});
 
-  static const routeName = '/';
+  static const routeName = '/makes';
 
-  static List<Vehicle> vehicles = VehicleRepository.loadAllVehicles();
+  static List<Make> makers = MakeRepository.loadAllMake();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Vehicles'),
+        title: const Text('Makers'),
         actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.restorablePushNamed(context, MakeListView.routeName);
-            },
-            icon: const Icon(Icons.factory),
-            tooltip: 'Makers',
-          ),
           IconButton(
             onPressed: () {},
             icon: const Icon(Icons.local_car_wash_rounded),
@@ -54,14 +46,13 @@ class VehicleListView extends StatelessWidget {
         // Providing a restorationId allows the ListView to restore the
         // scroll position when a user leaves and returns to the app after it
         // has been killed while running in the background.
-        restorationId: 'vehicleListView',
-        itemCount: vehicles.length,
+        restorationId: 'makeListView',
+        itemCount: makers.length,
         itemBuilder: (BuildContext context, int index) {
-          final vehicle = vehicles[index];
+          final make = makers[index];
 
           return ListTile(
-            title: Text(vehicle.model),
-            subtitle: Text(vehicle.vehicleDetails),
+            title: Text(make.make),
             leading: const CircleAvatar(
               // Display the Flutter Logo image asset.
               foregroundImage: AssetImage('assets/images/flutter_logo.png'),
@@ -71,8 +62,8 @@ class VehicleListView extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
-        tooltip: 'Add vehicle',
-        child: const Icon(Icons.time_to_leave_rounded),
+        tooltip: 'Add maker',
+        child: const Icon(Icons.factory),
       ),
     );
   }
