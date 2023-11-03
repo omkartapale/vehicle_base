@@ -15,8 +15,7 @@ class SettingsService {
     // Obtain shared preferences.
     final SharedPreferences prefs = await _prefs;
     final themeMode = prefs.getString('themeMode');
-    print('Theme from prefs  $themeMode');
-    // return ThemeMode.system;
+
     return switch (themeMode) {
       'ThemeMode.light' => ThemeMode.light,
       'ThemeMode.dark' => ThemeMode.dark,
