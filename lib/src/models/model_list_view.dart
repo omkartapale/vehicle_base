@@ -1,31 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:vehicle_base/src/make/make_list_view.dart';
-import 'package:vehicle_base/src/models/model_list_view.dart';
 
 import '../settings/settings_view.dart';
-import '../model/vehicle.dart';
-import '../data/vehicle_repository.dart';
+import '../model/model.dart';
+import '../data/model_repository.dart';
 
 /// Displays a list of Vehicles.
-class VehicleListView extends StatefulWidget {
-  const VehicleListView({super.key});
+class ModelListView extends StatefulWidget {
+  const ModelListView({super.key});
 
-  static const routeName = '/';
+  static const routeName = '/models';
 
-  static List<Vehicle> vehicles = VehicleRepository.loadAllVehicles();
+  static List<Model> models = ModelRepository.loadAllModels();
 
   @override
-  State<VehicleListView> createState() => _VehicleListViewState();
+  State<ModelListView> createState() => _ModelListViewState();
 }
 
-class _VehicleListViewState extends State<VehicleListView> {
+class _ModelListViewState extends State<ModelListView> {
   bool _isFiltered = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Vehicles'),
+        title: const Text('Models'),
         actions: [
           IconButton(
             onPressed: () {
@@ -35,13 +34,6 @@ class _VehicleListViewState extends State<VehicleListView> {
             },
             icon: Icon(_isFiltered ? Icons.filter_alt_off : Icons.filter_alt),
             tooltip: 'Filter models',
-          ),
-          IconButton(
-            onPressed: () {
-              Navigator.restorablePushNamed(context, ModelListView.routeName);
-            },
-            icon: const Icon(Icons.local_car_wash_rounded),
-            tooltip: 'Models',
           ),
           IconButton(
             onPressed: () {
@@ -73,14 +65,14 @@ class _VehicleListViewState extends State<VehicleListView> {
         // Providing a restorationId allows the ListView to restore the
         // scroll position when a user leaves and returns to the app after it
         // has been killed while running in the background.
-        restorationId: 'vehicleListView',
-        itemCount: VehicleListView.vehicles.length,
+        restorationId: 'modelListView',
+        itemCount: ModelListView.models.length,
         itemBuilder: (BuildContext context, int index) {
-          final vehicle = VehicleListView.vehicles[index];
+          final model = ModelListView.models[index];
 
           return ListTile(
-            title: Text(vehicle.model),
-            subtitle: Text(vehicle.vehicleDetails),
+            title: Text(model.model),
+            subtitle: Text(model.make),
             leading: const CircleAvatar(
               // Display the Flutter Logo image asset.
               foregroundImage: AssetImage('assets/images/flutter_logo.png'),
@@ -90,8 +82,8 @@ class _VehicleListViewState extends State<VehicleListView> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
-        tooltip: 'Add vehicle',
-        child: const Icon(Icons.time_to_leave_rounded),
+        tooltip: 'Add model',
+        child: const Icon(Icons.local_car_wash_rounded),
       ),
     );
   }

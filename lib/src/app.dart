@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:vehicle_base/src/make/make_list_view.dart';
+import 'package:vehicle_base/src/models/model_list_view.dart';
 import 'package:vehicle_base/src/vehicles/vehicle_list_view.dart';
 
 import 'sample_feature/sample_item_details_view.dart';
@@ -73,6 +74,8 @@ class MyApp extends StatelessWidget {
                     return SettingsView(controller: settingsController);
                   case MakeListView.routeName:
                     return const MakeListView();
+                  case ModelListView.routeName:
+                    return const ModelListView();
                   case SampleItemDetailsView.routeName:
                     return const SampleItemDetailsView();
                   case SampleItemListView.routeName:

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../models/model_list_view.dart';
 import '../settings/settings_view.dart';
 import '../model/make.dart';
 import '../data/make_repository.dart';
@@ -19,7 +20,9 @@ class MakeListView extends StatelessWidget {
         title: const Text('Makers'),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.restorablePushNamed(context, ModelListView.routeName);
+            },
             icon: const Icon(Icons.local_car_wash_rounded),
             tooltip: 'Models',
           ),
