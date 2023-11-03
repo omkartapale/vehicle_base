@@ -19,6 +19,16 @@ class VehicleListView extends StatelessWidget {
         title: const Text('Vehicles'),
         actions: [
           IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.factory),
+            tooltip: 'Makers',
+          ),
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.local_car_wash_rounded),
+            tooltip: 'Models',
+          ),
+          IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () {
               // Navigate to the settings page. If the user leaves and returns
@@ -26,6 +36,7 @@ class VehicleListView extends StatelessWidget {
               // background, the navigation stack is restored.
               Navigator.restorablePushNamed(context, SettingsView.routeName);
             },
+            tooltip: 'Settings',
           ),
         ],
       ),
@@ -54,6 +65,11 @@ class VehicleListView extends StatelessWidget {
             ),
           );
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        tooltip: 'Add vehicle',
+        child: const Icon(Icons.time_to_leave_rounded),
       ),
     );
   }
