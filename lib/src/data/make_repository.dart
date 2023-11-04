@@ -11,7 +11,6 @@ class MakeRepository {
     Make(id: '7', name: 'Ford'),
     Make(id: '8', name: 'Datsun'),
     Make(id: '9', name: 'Opel'),
-    Make(id: '10', name: 'Ford'),
   ];
 
   static List<Make> loadAllMake() => _allMakers;
