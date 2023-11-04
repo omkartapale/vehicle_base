@@ -55,7 +55,7 @@ class MakeListView extends StatelessWidget {
           final make = makers[index];
 
           return ListTile(
-            title: Text(make.make),
+            title: Text(make.name),
             leading: const CircleAvatar(
               // Display the Flutter Logo image asset.
               foregroundImage: AssetImage('assets/images/flutter_logo.png'),
