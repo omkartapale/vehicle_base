@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:vehicle_base/src/make/make_list_view.dart';
 
-import '../settings/settings_view.dart';
-import '../model/model.dart';
 import '../data/model_repository.dart';
+import '../model/model.dart';
+import '../settings/settings_view.dart';
+import 'model_form.dart';
 
 /// Displays a list of Vehicles.
 class ModelListView extends StatefulWidget {
@@ -71,20 +72,84 @@ class _ModelListViewState extends State<ModelListView> {
           final model = ModelListView.models[index];
 
           return ListTile(
-            title: Text(model.model),
+            title: Text(model.name),
             subtitle: Text(model.make),
             leading: const CircleAvatar(
               // Display the Flutter Logo image asset.
               foregroundImage: AssetImage('assets/images/flutter_logo.png'),
             ),
+            onTap: () => _showBottomSheetForm(context, model),
+            onLongPress: () => _confirmDelete(context, model),
           );
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () => _showBottomSheetForm(context),
         tooltip: 'Add model',
         child: const Icon(Icons.local_car_wash_rounded),
       ),
+    );
+  }
+
+  Future<dynamic> _confirmDelete(BuildContext context, Model model) {
+    final ThemeData theme = Theme.of(context);
+    final TextStyle textStyle = theme.textTheme.bodyMedium!;
+    return showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text("Delete ${model.make} - ${model.name}?"),
+        content: RichText(
+          text: TextSpan(
+            children: <TextSpan>[
+              TextSpan(
+                  style: textStyle,
+                  text: 'Once you delete, you will not be able to use '
+                      'this in future. \n\nAre you sure to delete?'),
+              // TextSpan(
+              //     style: textStyle.copyWith(fontWeight: FontWeight.bold),
+              //     text: make.name),
+              // TextSpan(style: textStyle, text: '?'),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(ctx);
+            },
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            onPressed: () {
+              Navigator.pop(ctx);
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text(
+                'Deleted ${model.name}.',
+                textAlign: TextAlign.center,
+              )));
+            },
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _showBottomSheetForm(BuildContext context, [Model? model]) {
+    return showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      showDragHandle: true,
+      builder: (context) {
+        return SingleChildScrollView(
+          child: Container(
+            padding: MediaQuery.of(context).viewInsets,
+            child: ModelForm(
+              modelItem: model,
+            ),
+          ),
+        );
+      },
     );
   }
 }
