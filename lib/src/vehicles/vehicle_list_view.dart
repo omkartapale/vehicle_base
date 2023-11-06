@@ -5,6 +5,7 @@ import 'package:vehicle_base/src/models/model_list_view.dart';
 import '../settings/settings_view.dart';
 import '../model/vehicle.dart';
 import '../data/vehicle_repository.dart';
+import 'vehicle_form.dart';
 
 /// Displays a list of Vehicles.
 class VehicleListView extends StatefulWidget {
@@ -85,14 +86,74 @@ class _VehicleListViewState extends State<VehicleListView> {
               // Display the Flutter Logo image asset.
               foregroundImage: AssetImage('assets/images/flutter_logo.png'),
             ),
+            onTap: () => _showBottomSheetForm(context, vehicle),
+            onLongPress: () => _confirmDelete(context, vehicle),
           );
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () => _showBottomSheetForm(context),
         tooltip: 'Add vehicle',
         child: const Icon(Icons.time_to_leave_rounded),
       ),
+    );
+  }
+
+  Future<dynamic> _confirmDelete(BuildContext context, Vehicle vehicle) {
+    final ThemeData theme = Theme.of(context);
+    final TextStyle textStyle = theme.textTheme.bodyMedium!;
+    return showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text("Delete ${vehicle.name}?"),
+        content: RichText(
+          text: TextSpan(
+            children: <TextSpan>[
+              TextSpan(
+                  style: textStyle,
+                  text: 'Once you delete, you will not be able to use '
+                      'this in future. \n\nAre you sure to delete?'),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(ctx);
+            },
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            onPressed: () {
+              Navigator.pop(ctx);
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text(
+                'Deleted ${vehicle.name}.',
+                textAlign: TextAlign.center,
+              )));
+            },
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _showBottomSheetForm(BuildContext context, [Vehicle? vehicle]) {
+    return showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      showDragHandle: true,
+      builder: (context) {
+        return SingleChildScrollView(
+          child: Container(
+            padding: MediaQuery.of(context).viewInsets,
+            child: VehicleForm(
+              vehicleItem: vehicle,
+            ),
+          ),
+        );
+      },
     );
   }
 }

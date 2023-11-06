@@ -17,4 +17,10 @@ class ModelRepository {
   ];
 
   static List<Model> loadAllModels() => _allModels;
+
+  static List<Model> filterModels(String make) {
+    return _allModels.where((Model model) {
+      return model.make == make;
+    }).toList();
+  }
 }

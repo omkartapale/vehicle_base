@@ -19,6 +19,14 @@ class Vehicle {
     return details.join(' \u2022 ');
   }
 
+  String get name {
+    List<String> details = [];
+    details.add(make);
+    details.add(model);
+    variant != null ? details.add(variant!) : '';
+    return details.join(' ');
+  }
+
   factory Vehicle.fromJson(Map<String, dynamic> json) {
     return Vehicle(
       id: json['id'],
