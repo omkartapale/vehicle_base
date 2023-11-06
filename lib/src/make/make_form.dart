@@ -43,6 +43,7 @@ class _MakeFormState extends State<MakeForm> {
             TextFormField(
               // keyboardType: TextInputType.text,
               initialValue: widget.makeItem?.name,
+              textCapitalization: TextCapitalization.words,
               decoration: InputDecoration(
                 isDense: true,
                 label: const Text('Manufacturer Name *'),

@@ -97,7 +97,7 @@ class _ModelListViewState extends State<ModelListView> {
     return showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text("Delete ${model.make} - ${model.name}?"),
+        title: Text("Delete ${model.make} ${model.name}?"),
         content: RichText(
           text: TextSpan(
             children: <TextSpan>[
