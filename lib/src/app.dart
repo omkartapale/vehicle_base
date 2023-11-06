@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:vehicle_base/src/make/make_list_view.dart';
 import 'package:vehicle_base/src/models/model_list_view.dart';
 import 'package:vehicle_base/src/vehicles/vehicle_list_view.dart';
@@ -59,8 +60,11 @@ class MyApp extends StatelessWidget {
           // Define a light and dark color theme. Then, read the user's
           // preferred ThemeMode (light, dark, or system default) from the
           // SettingsController to display the correct theme.
-          theme: ThemeData(useMaterial3: true),
-          darkTheme: ThemeData.dark(useMaterial3: true),
+          theme: ThemeData(
+              useMaterial3: true, textTheme: GoogleFonts.poppinsTextTheme()),
+          darkTheme: ThemeData.dark(useMaterial3: true).copyWith(
+              textTheme: GoogleFonts.poppinsTextTheme(
+                  ThemeData(brightness: Brightness.dark).textTheme)),
           themeMode: settingsController.themeMode,
 
           // Define a function to handle named routes in order to support
