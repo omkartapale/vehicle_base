@@ -71,12 +71,18 @@ class _VehicleFormState extends State<VehicleForm> {
     _selectedModel = widget.vehicleItem?.model;
 
     // Populate makers list
-    makers = MakeRepository.loadAllMake();
+    makers = (_isNewVehicle) ? MakeRepository.loadAllMake() : [];
 
-    // Check if vehicle is provided then populate models according to
-    // provided vehicle's make
-    filteredModels =
-        (_isNewVehicle) ? [] : ModelRepository.filterModels(_selectedMake!);
+    // Check if new vehicle or provided vehicle with make then return empty
+    // else populate models according to provided vehicle's make
+    filteredModels = (_isNewVehicle || _selectedMake!.isNotEmpty)
+        ? []
+        : ModelRepository.filterModels(_selectedMake!);
+    // filteredModels = (_isNewVehicle)
+    //     ? []
+    //     : (_selectedMake!.isEmpty)
+    //         ? ModelRepository.filterModels(_selectedMake!)
+    //         : [];
   }
 
   @override
@@ -95,6 +101,10 @@ class _VehicleFormState extends State<VehicleForm> {
                     OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
               ),
               value: _selectedMake,
+              disabledHint: Text(
+                _selectedMake ?? 'Select Manufacturer',
+                style: const TextStyle(fontWeight: FontWeight.normal),
+              ),
               // menuMaxHeight: 400,
               hint: const Text(
                 'Select Manufacturer',
@@ -137,6 +147,10 @@ class _VehicleFormState extends State<VehicleForm> {
                     OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
               ),
               value: _selectedModel,
+              disabledHint: Text(
+                _selectedModel ?? 'Select Model',
+                style: const TextStyle(fontWeight: FontWeight.normal),
+              ),
               // menuMaxHeight: 400,
               hint: const Text(
                 'Select Model',
