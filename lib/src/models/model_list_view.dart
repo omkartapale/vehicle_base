@@ -26,8 +26,8 @@ class _ModelListViewState extends State<ModelListView> {
 
   @override
   void initState() {
-    models = ModelRepository.loadAllModels();
     super.initState();
+    models = ModelRepository.loadAllModels();
   }
 
   @override
@@ -117,11 +117,10 @@ class _ModelListViewState extends State<ModelListView> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  IconButton(
-                    icon: const Icon(Icons.tune_rounded),
-                    onPressed: () => _filterDialog(context),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 12.0),
+                    child: Icon(Icons.tune_rounded),
                   ),
-                  const SizedBox(width: 8),
                   Flexible(
                     child: Text(
                       '$makeFilter (${models.length})',
