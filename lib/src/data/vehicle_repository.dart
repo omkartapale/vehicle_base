@@ -17,4 +17,12 @@ class VehicleRepository {
   ];
 
   static List<Vehicle> loadAllVehicles() => _allVehicles;
+
+  static List<Vehicle> filterVehicles({required String make, String? model}) {
+    return _allVehicles.where((Vehicle vehicle) {
+      return (model != null && model.isNotEmpty)
+          ? vehicle.make == make && vehicle.model == model
+          : vehicle.make == make;
+    }).toList();
+  }
 }
