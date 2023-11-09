@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "700008836329",
+    "project_id": "vehicle-base-b5e19",
+    "storage_bucket": "vehicle-base-b5e19.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:700008836329:android:2c0e1b70630405212d1478",
+        "android_client_info": {
+          "package_name": "com.example.vehicle_base"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUhIFeRXZOGiqOMhlKqhBW-HKALnEznxI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
