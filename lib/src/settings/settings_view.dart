@@ -31,8 +31,10 @@ class SettingsView extends StatelessWidget {
         children: [
           ListTile(
             title: Text('Color Scheme'.toUpperCase()),
-            subtitle: const Text('Set it to your choice or set it to '
-                'System to adapt with system.'),
+            subtitle:
+                Text(themeModeValueToString(context, controller.themeMode)),
+            // subtitle: const Text('Set it to your choice or set it to '
+            //     'System to adapt with system.'),
 
             // Glue the SettingsController to the theme selection DropdownButton.
             //
@@ -63,6 +65,8 @@ class SettingsView extends StatelessWidget {
           ),
           PopupMenuButton<ThemeMode>(
             padding: EdgeInsets.zero,
+            offset: Offset(MediaQuery.of(context).size.width, 0),
+            // position: PopupMenuPosition.under,
             initialValue: controller.themeMode,
             onSelected: (value) => controller.updateThemeMode(value),
             itemBuilder: (context) => const <PopupMenuItem<ThemeMode>>[
