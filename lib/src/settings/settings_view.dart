@@ -13,6 +13,14 @@ class SettingsView extends StatelessWidget {
 
   final SettingsController controller;
 
+  String themeModeValueToString(BuildContext context, ThemeMode value) {
+    return {
+      ThemeMode.system: 'System Theme',
+      ThemeMode.light: 'Light Theme',
+      ThemeMode.dark: 'Dark Theme',
+    }[value]!;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,6 +59,30 @@ class SettingsView extends StatelessWidget {
                   child: Text('Dark'),
                 )
               ],
+            ),
+          ),
+          PopupMenuButton<ThemeMode>(
+            padding: EdgeInsets.zero,
+            initialValue: controller.themeMode,
+            onSelected: (value) => controller.updateThemeMode(value),
+            itemBuilder: (context) => const <PopupMenuItem<ThemeMode>>[
+              PopupMenuItem<ThemeMode>(
+                value: ThemeMode.system,
+                child: Text('System'),
+              ),
+              PopupMenuItem<ThemeMode>(
+                value: ThemeMode.light,
+                child: Text('Light'),
+              ),
+              PopupMenuItem<ThemeMode>(
+                value: ThemeMode.dark,
+                child: Text('Dark'),
+              ),
+            ],
+            child: ListTile(
+              title: Text('Color Scheme'.toUpperCase()),
+              subtitle:
+                  Text(themeModeValueToString(context, controller.themeMode)),
             ),
           ),
           ListTile(
