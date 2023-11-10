@@ -20,13 +20,13 @@ class MakeListView extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Makers'),
         actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.restorablePushNamed(context, ModelListView.routeName);
-            },
-            icon: const Icon(Icons.local_car_wash_rounded),
-            tooltip: 'Models',
-          ),
+          // IconButton(
+          //   onPressed: () {
+          //     Navigator.restorablePushNamed(context, ModelListView.routeName);
+          //   },
+          //   icon: const Icon(Icons.local_car_wash_rounded),
+          //   tooltip: 'Models',
+          // ),
           IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () {
