@@ -26,6 +26,7 @@ class SettingsView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Settings'),
+        shadowColor: Theme.of(context).colorScheme.shadow,
       ),
       body: Column(
         children: [

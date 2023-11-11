@@ -19,6 +19,7 @@ class MakeListView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Makers'),
+        shadowColor: Theme.of(context).colorScheme.shadow,
         actions: [
           // IconButton(
           //   onPressed: () {
