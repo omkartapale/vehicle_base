@@ -1,10 +1,10 @@
 /// Dummy Data Repository
 class Make {
-  final String id;
+  final String? id;
   final String name;
 
   const Make({
-    required this.id,
+    this.id,
     required this.name,
   });
 
