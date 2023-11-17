@@ -78,7 +78,9 @@ class _MakeFormState extends State<MakeForm> {
               onPressed: () async {
                 // Prepare object with new data for processing
                 final make = Make(
-                    id: widget.makeItem?.id, name: nameController.text.trim());
+                    id: widget.makeItem?.id,
+                    name: nameController.text.trim(),
+                    lowercasedName: nameController.text.trim().toLowerCase());
 
                 // Check if new value is creating duplicate of existing item
                 await makeService.checkDuplicate(make).then((snap) async {

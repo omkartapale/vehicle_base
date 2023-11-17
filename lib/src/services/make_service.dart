@@ -20,14 +20,14 @@ class MakeService {
   }
 
   Stream<List<Make>> getMakes() {
-    return ref.orderBy('name').snapshots().map((event) => event.docs
+    return ref.orderBy('lowercasedName').snapshots().map((event) => event.docs
         .map((e) => Make.fromJson(e.data() as Map<String, dynamic>))
         .toList());
   }
 
   Future<QuerySnapshot<Object?>> checkDuplicate(Make make) async {
     QuerySnapshot res = await ref
-        .where('name', isEqualTo: make.name)
+        .where('lowercasedName', isEqualTo: make.lowercasedName)
         .where('id', isNotEqualTo: make.id)
         .limit(1)
         .get();
@@ -36,7 +36,7 @@ class MakeService {
 
   Future<bool> checkMakeAlreadyExist(Make make) async {
     final QuerySnapshot result = await ref
-        .where('name', isEqualTo: make.name)
+        .where('lowercasedName', isEqualTo: make.lowercasedName)
         .where('id', isNotEqualTo: make.id)
         .limit(1)
         .get();
