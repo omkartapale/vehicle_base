@@ -20,6 +20,7 @@ class _MakeFormState extends State<MakeForm> {
   TextEditingController nameController = TextEditingController();
 
   bool _isCreate = true;
+  bool _duplicateItemFound = false;
 
   @override
   void initState() {
@@ -66,94 +67,91 @@ class _MakeFormState extends State<MakeForm> {
                 if (value.trim().length < 2) {
                   return 'Make should be atleast two characters long.';
                 }
+                if (_duplicateItemFound) {
+                  return "Manufacturer with the same name already exists.";
+                }
                 return null;
               },
             ),
             const SizedBox(height: 16),
             FilledButton.icon(
               onPressed: () async {
+                // Prepare object with new data for processing
+                final make = Make(
+                    id: widget.makeItem?.id, name: nameController.text.trim());
+
+                // Check if new value is creating duplicate of existing item
+                await makeService.checkDuplicate(make).then((snap) async {
+                  // debugPrint('Size: ${snap.size}');
+                  // debugPrint('Length: ${snap.docs.length}');
+                  // debugPrint('isEmpty: ${snap.docs.isEmpty}');
+                  _duplicateItemFound = snap.docs.isNotEmpty;
+                }).catchError((e) {
+                  debugPrint(e.toString());
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text(
+                        'Error: Something went wrong. Try again.',
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  );
+                });
+
                 // Validate will return true if the form is valid, or false if
                 // the form is invalid.
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
 
                   // Process data.
-                  final make = Make(
-                      id: widget.makeItem?.id,
-                      name: nameController.text.trim());
-
-                  bool duplicateItem = false;
-
-                  // Check if new value is creating duplicate of existing item
-                  await makeService.checkDuplicate(make).then((snap) async {
-                    // debugPrint('Size: ${snap.size}');
-                    // debugPrint('Length: ${snap.docs.length}');
-                    // debugPrint('isEmpty: ${snap.docs.isEmpty}');
-
-                    if (snap.docs.isNotEmpty) {
-                      duplicateItem = true;
-                      _showDuplicateError(context, make);
-                    }
-                  }).catchError((e) {
-                    debugPrint(e.toString());
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text(
-                          'Error: Something went wrong. Try again.',
-                          textAlign: TextAlign.center,
+                  // if form is valid and does not duplicate then proceed
+                  // to create or update logic
+                  if (_isCreate) {
+                    // debugPrint('Validated and Adding new make');
+                    await makeService.addMake(make).then((value) {
+                      Navigator.pop(context);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            'Manufacturer ${make.name} created.',
+                            textAlign: TextAlign.center,
+                          ),
                         ),
-                      ),
-                    );
-                  });
-
-                  // if not duplicate then proceed to create or update
-                  if (!duplicateItem) {
-                    if (_isCreate) {
-                      await makeService.addMake(make).then((value) {
-                        Navigator.pop(context);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              'Manufacturer ${make.name} created.',
-                              textAlign: TextAlign.center,
-                            ),
+                      );
+                    }).catchError((e) {
+                      debugPrint(e.toString());
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                            'Error: Something went wrong. Try again.',
+                            textAlign: TextAlign.center,
                           ),
-                        );
-                      }).catchError((e) {
-                        debugPrint(e.toString());
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                              'Error: Something went wrong. Try again.',
-                              textAlign: TextAlign.center,
-                            ),
+                        ),
+                      );
+                    });
+                  } else {
+                    debugPrint('Validated and Updating existing make');
+                    await makeService.updateMake(make).then((value) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            'Manufacturer ${widget.makeItem?.name} updated.',
+                            textAlign: TextAlign.center,
                           ),
-                        );
-                      });
-                    } else {
-                      // TODO(omkartapale): while update cross check if the updated name already exist with same ID then update or else show duplicate error
-                      await makeService.updateMake(make).then((value) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              'Manufacturer ${widget.makeItem?.name} updated.',
-                              textAlign: TextAlign.center,
-                            ),
+                        ),
+                      );
+                      Navigator.pop(context);
+                    }).catchError((e) {
+                      debugPrint(e.toString());
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                            'Error: Something went wrong. Try again.',
+                            textAlign: TextAlign.center,
                           ),
-                        );
-                        Navigator.pop(context);
-                      }).catchError((e) {
-                        debugPrint(e.toString());
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                              'Error: Something went wrong. Try again.',
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        );
-                      });
-                    }
+                        ),
+                      );
+                    });
                   }
                 }
               },
@@ -165,47 +163,6 @@ class _MakeFormState extends State<MakeForm> {
             const SizedBox(height: 16),
           ],
         ),
-      ),
-    );
-  }
-
-  Future<dynamic> _showDuplicateError(BuildContext context, Make make) {
-    final ThemeData theme = Theme.of(context);
-    final TextStyle textStyle = theme.textTheme.bodyMedium!;
-    return showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (ctx) => AlertDialog(
-        icon: const Icon(Icons.error_outline_rounded, size: 48),
-        iconColor: theme.colorScheme.onErrorContainer,
-        backgroundColor: theme.colorScheme.errorContainer,
-        title: const Text("Found Duplicate!"),
-        content: RichText(
-          text: TextSpan(
-            children: <TextSpan>[
-              TextSpan(
-                  text: 'Couldn\'t add this Make. Another manufacturer ',
-                  style: textStyle),
-              TextSpan(
-                  text: make.name,
-                  style: textStyle.copyWith(fontWeight: FontWeight.bold)),
-              TextSpan(
-                  text: ' already exists with the same details.',
-                  style: textStyle),
-            ],
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(ctx);
-            },
-            child: Text(
-              'OK',
-              style: textStyle,
-            ),
-          ),
-        ],
       ),
     );
   }

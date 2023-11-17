@@ -29,8 +29,19 @@ class MakeService {
     QuerySnapshot res = await ref
         .where('name', isEqualTo: make.name)
         .where('id', isNotEqualTo: make.id)
+        .limit(1)
         .get();
     return res;
+  }
+
+  Future<bool> checkMakeAlreadyExist(Make make) async {
+    final QuerySnapshot result = await ref
+        .where('name', isEqualTo: make.name)
+        .where('id', isNotEqualTo: make.id)
+        .limit(1)
+        .get();
+    final List<DocumentSnapshot> documents = result.docs;
+    return documents.length == 1;
   }
 
   Future<DocumentReference> addMake(Make make) async {
