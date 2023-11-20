@@ -239,7 +239,8 @@ class _VehicleListViewState extends State<VehicleListView> {
           child: DropdownButtonFormField(
             autovalidateMode: AutovalidateMode.onUserInteraction,
             value: _isFiltered ? makeFilter : null,
-            hint: const Text('Filter by Make'),
+            icon: const Icon(Icons.factory),
+            hint: const Text('By Make'),
             borderRadius: BorderRadius.circular(8),
             items: makers.map((Make make) {
               return DropdownMenuItem<String>(
@@ -268,7 +269,7 @@ class _VehicleListViewState extends State<VehicleListView> {
               });
               Navigator.pop(context);
             },
-            child: const Text('Clear Filter'),
+            child: const Text('Clear'),
           ),
           FilledButton(
             onPressed: () {
@@ -282,7 +283,7 @@ class _VehicleListViewState extends State<VehicleListView> {
                 Navigator.pop(context);
               }
             },
-            child: const Text('Filter'),
+            child: const Text('Apply filter'),
           ),
         ],
       ),

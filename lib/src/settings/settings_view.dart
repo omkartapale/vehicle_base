@@ -30,40 +30,48 @@ class SettingsView extends StatelessWidget {
       ),
       body: Column(
         children: [
-          ListTile(
-            title: Text('Color Scheme'.toUpperCase()),
-            subtitle:
-                Text(themeModeValueToString(context, controller.themeMode)),
-            // subtitle: const Text('Set it to your choice or set it to '
-            //     'System to adapt with system.'),
-
-            // Glue the SettingsController to the theme selection DropdownButton.
-            //
-            // When a user selects a theme from the dropdown list, the
-            // SettingsController is updated, which rebuilds the MaterialApp.
-            trailing: DropdownButton<ThemeMode>(
-              borderRadius: BorderRadius.circular(8),
-
-              // Read the selected themeMode from the controller
-              value: controller.themeMode,
-              // Call the updateThemeMode method any time the user selects a theme.
-              onChanged: controller.updateThemeMode,
-              items: const [
-                DropdownMenuItem(
-                  value: ThemeMode.system,
-                  child: Text('System'),
-                ),
-                DropdownMenuItem(
-                  value: ThemeMode.light,
-                  child: Text('Light'),
-                ),
-                DropdownMenuItem(
-                  value: ThemeMode.dark,
-                  child: Text('Dark'),
-                )
-              ],
+          Container(
+            padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Color Scheme'.toUpperCase(),
+              style: TextStyle(color: Theme.of(context).hintColor),
             ),
           ),
+          // ListTile(
+          //   title: const Text('Theme'),
+          //   subtitle:
+          //       Text(themeModeValueToString(context, controller.themeMode)),
+          //   // subtitle: const Text('Set it to your choice or set it to '
+          //   //     'System to adapt with system.'),
+
+          //   // Glue the SettingsController to the theme selection DropdownButton.
+          //   //
+          //   // When a user selects a theme from the dropdown list, the
+          //   // SettingsController is updated, which rebuilds the MaterialApp.
+          //   trailing: DropdownButton<ThemeMode>(
+          //     borderRadius: BorderRadius.circular(8),
+
+          //     // Read the selected themeMode from the controller
+          //     value: controller.themeMode,
+          //     // Call the updateThemeMode method any time the user selects a theme.
+          //     onChanged: controller.updateThemeMode,
+          //     items: const [
+          //       DropdownMenuItem(
+          //         value: ThemeMode.system,
+          //         child: Text('System'),
+          //       ),
+          //       DropdownMenuItem(
+          //         value: ThemeMode.light,
+          //         child: Text('Light'),
+          //       ),
+          //       DropdownMenuItem(
+          //         value: ThemeMode.dark,
+          //         child: Text('Dark'),
+          //       )
+          //     ],
+          //   ),
+          // ),
           PopupMenuButton<ThemeMode>(
             padding: EdgeInsets.zero,
             offset: Offset(MediaQuery.of(context).size.width, 0),
@@ -85,30 +93,55 @@ class SettingsView extends StatelessWidget {
               ),
             ],
             child: ListTile(
-              title: Text('Color Scheme'.toUpperCase()),
+              title: const Text('Theme'),
               subtitle:
                   Text(themeModeValueToString(context, controller.themeMode)),
             ),
           ),
-          ListTile(
-            title: Text(
+          const Divider(indent: 16.0, endIndent: 16.0),
+          Container(
+            padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
+            alignment: Alignment.centerLeft,
+            child: Text(
               'About'.toUpperCase(),
+              style: TextStyle(color: Theme.of(context).hintColor),
             ),
-            subtitle: const Text('Vehicle Base App'),
+          ),
+          const ListTile(
+            isThreeLine: true,
+            title: Text('Indian Vehicles Base Dataset'),
+            subtitle: Text('\nMake, Model and Variant recording app\n'
+                '\u00a9 2023 Tech4Geek Solutions\n\n'
+                'Version: Nov 2023'),
+          ),
+          ListTile(
+            title: const Text('Licenses'),
+            subtitle: const Text('Open Source licenses'),
             onTap: () {
-              showAboutDialog(
-                  context: context,
-                  applicationName: 'Vehicle Base',
-                  applicationVersion: 'Nov 2023',
-                  applicationLegalese: '\u00a9 2023 Tech4Geek Solutions');
+              showLicensePage(
+                context: context,
+                applicationName: 'Vehicle Base',
+                // applicationVersion: 'Nov 2023',
+                applicationLegalese: '\u00a9 2023 Tech4Geek Solutions',
+              );
             },
           ),
           const Spacer(),
           FilledButton(
-            onPressed: () => controller.clearThemeMode(),
+            onPressed: () {
+              controller.clearThemeMode();
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text(
+                    'Preferences cleared.',
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              );
+            },
             child: const Text('Clear Preferences'),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 24.0),
         ],
       ),
     );
