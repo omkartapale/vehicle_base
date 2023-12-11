@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../data/make_repository.dart';
@@ -13,7 +14,7 @@ import 'vehicle_form.dart';
 class VehicleListView extends StatefulWidget {
   const VehicleListView({super.key});
 
-  static const routeName = '/';
+  static const routeName = '/home';
 
   @override
   State<VehicleListView> createState() => _VehicleListViewState();
@@ -28,6 +29,15 @@ class _VehicleListViewState extends State<VehicleListView> {
   @override
   void initState() {
     super.initState();
+    // TODO(omakrtapale): Check mounted here to resolve issue after logging out
+    // Detect when a user signs in (or out, when sign out is implemented)
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user == null) {
+        Navigator.pushNamedAndRemoveUntil(
+            context, '/login', ((route) => false));
+      }
+    });
+
     vehicles = VehicleRepository.loadAllVehicles();
   }
 

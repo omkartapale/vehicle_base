@@ -103,6 +103,22 @@ class SettingsView extends StatelessWidget {
             padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
             alignment: Alignment.centerLeft,
             child: Text(
+              'Account'.toUpperCase(),
+              style: TextStyle(color: Theme.of(context).hintColor),
+            ),
+          ),
+          ListTile(
+            title: const Text('Display Name'),
+            subtitle: const Text('signedinuser@email.com'),
+            onTap: () {
+              Navigator.pushNamed(context, '/profile');
+            },
+          ),
+          const Divider(indent: 16.0, endIndent: 16.0),
+          Container(
+            padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
+            alignment: Alignment.centerLeft,
+            child: Text(
               'About'.toUpperCase(),
               style: TextStyle(color: Theme.of(context).hintColor),
             ),
@@ -116,7 +132,7 @@ class SettingsView extends StatelessWidget {
           ),
           ListTile(
             title: const Text('Licenses'),
-            subtitle: const Text('Open Source licenses'),
+            subtitle: const Text('Open-Source licenses'),
             onTap: () {
               showLicensePage(
                 context: context,
